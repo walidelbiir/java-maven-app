@@ -5,14 +5,7 @@ package com.example;
  */
 public class Greeter {
 
-  /**
-   * This is a constructor.
-   */
-  public Greeter() {
 
-  }
-
-  //TODO: Add javadoc comment
   public String greet(String someone) {
     System.out.println( String.format("Hello, %s!", someone));
     return String.format("Hello, %s!", someone);
