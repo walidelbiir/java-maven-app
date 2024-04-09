@@ -8,10 +8,8 @@ pipeline{
             steps{
                 echo "========executing Login========"
                 withCredentials([usernamePassword(credentialsId: 'github_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                        git config --global user.name $USERNAME
-                        git config --global user.password $PASSWORD
-                    '''
+                    sh git config --global user.name $USERNAME
+                    sh git config --global user.password $PASSWORD
                 }
             }
         }
