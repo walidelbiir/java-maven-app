@@ -16,7 +16,7 @@ pipeline{
         stage("Execute Sonar Analysis") {
             steps{
                 echo "=========Executing Sonar Analysis========="
-                withSonarQubeENv('local_sonarQube_server'){
+                withSonarQubeEnv('local_sonarQube_server'){
                     sh 'mvn clean sonar:sonar'  
                 }
             }
