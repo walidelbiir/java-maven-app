@@ -8,15 +8,15 @@ pipeline{
             steps{
                 echo "========executing Login========"
                 withCredentials([usernamePassword(credentialsId: 'github_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "git config --global user.name $USERNAME"
-                    sh "git config --global user.password $PASSWORD"
+                    sh 'git config --global user.name ${USERNAME}'
+                    sh 'git config --global user.password ${PASSWORD}'
                 }
             }
         }
         stage("Execute Sonar Analysis") {
             steps{
                 echo "=========executing build with Maven========="
-                sh 'mv clean install'
+                sh 'mvn clean install'  
             }
         }
     }
