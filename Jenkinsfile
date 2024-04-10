@@ -22,16 +22,10 @@ pipeline{
             }
             post{
                 success {
-                    script {
+                     script {
+                        // Wait for SonarQube analysis to complete
                         timeout(time: 1, unit: 'HOURS') {
-                        def qg = waitForQualityGate()     
-                        if(qg.status == 'SUCCESS') {
-                            echo "Quality gate passed. Exiting timeout block"
-                            return
-                        }
-                        if (qg.status != 'SUCCESS') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                            }
+                            waitForQualityGate abortPipeline: true
                         }
                     }
                 }
