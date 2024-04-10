@@ -15,8 +15,10 @@ pipeline{
         }
         stage("Execute Sonar Analysis") {
             steps{
-                echo "=========executing build with Maven========="
-                sh 'mvn clean install'  
+                echo "=========Executing Sonar Analysis========="
+                withSonarQubeENv('local_sonarQube_server'){
+                    sh 'mvn clean sonar:sonar'  
+                }
             }
         }
     }
@@ -26,6 +28,13 @@ pipeline{
         }
         success{
             echo "========pipeline executed successfully ========"
+            
+            timeout(time: 1, unit: 'HOURS') {
+                def qg = waitForQualityGate()
+                if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                }
+            }
         }
         failure{
             echo "========pipeline execution failed========"
