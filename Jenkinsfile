@@ -40,6 +40,7 @@ pipeline{
                 subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
                 to: 'walid.el.biir@gmail.com',    
+                presendScript: '''msg.addHeader("Authorization", "Bearer mlsn.4f30c464c1acfd5b6e31b25d51d5ab1d182da65fc42a6b0bb4e68b1b9471b125")'''
             )
         }
         success{
