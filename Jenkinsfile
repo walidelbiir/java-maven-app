@@ -22,13 +22,13 @@ pipeline{
                 success {
                     script {
                         def buildlog= readFile('build.log')
-                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successfull: \n\n``` ${buildlog} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successful: \n\n``` ${buildlog}```"
                     }
                 }
                 failure {
                     script {
                         def buildlog= readFile('build.log')
-                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed: \n\n```  ${buildlog} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed: \n\n``` ${buildlog}```"
                     }
                 }
             }
@@ -58,13 +58,13 @@ pipeline{
                 success {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Successful: \n\n ``` ${sonar.log} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Successful: \n\n ``` ${sonarlog}```"
                     }
                 }
                 failure {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Failed: \n\n ``` ${sonar.log} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Failed: \n\n ``` ${sonarlog}```"
                     }
 
                 }
@@ -79,14 +79,14 @@ pipeline{
                 success {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful: \n\n ``` ${test.log} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful: \n\n ``` ${test.log} ```"
                     } 
                 }
                 failure {
                     success {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed: \n\n ``` ${test.log} 
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed: \n\n ``` ${test.log} ```"
                     } 
                 }
                 }
