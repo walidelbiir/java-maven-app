@@ -36,8 +36,8 @@ pipeline{
     }
     post{
         always{
-            emailtext(
-                to: 'walid.el.biir@gmail.com',
+            emailext(
+                to: 'walid.el.biir@gmail.com',    
             )
         }
         success{
