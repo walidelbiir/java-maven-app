@@ -36,7 +36,9 @@ pipeline{
     }
     post{
         always{
-            echo "========always========="
+            emailtext(
+                to: 'walid.el.biir@gmail.com',
+            )
         }
         success{
             echo "========pipeline executed successfully ========"
