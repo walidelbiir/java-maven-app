@@ -45,9 +45,11 @@ pipeline{
         }
         success{
             echo "========pipeline executed successfully ========"
+            slackSend channel: "#ci_info", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
         }
         failure{
             echo "========pipeline execution failed========"
+            slackSend channel: "#ci_info", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "danger"
         }
     }
 }
