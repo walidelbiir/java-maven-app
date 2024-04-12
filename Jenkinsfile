@@ -13,23 +13,82 @@ pipeline{
                 }
             }
         }
-        stage("Execute Sonar Analysis") {
+        stage("Maven Build Status") {
             steps{
                 echo "=========Executing Sonar Analysis========="
-                withSonarQubeEnv('local_sonarQube_server'){
-                    sh 'mvn clean verify sonar:sonar'  
-                }
+                sh 'mvn clean install > build.log'  
             }
             post{
                 success {
-                     script {
+                    script {
+                        def buildlog= readFile('build.log')
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successfull: \n\n``` ${buildlog} 
+                    }
+                }
+                failure {
+                    script {
+                        def buildlog= readFile('build.log')
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed: \n\n```  ${buildlog} 
+                    }
+                }
+            }
+        }
+
+        stage("SonarQube analysis") {
+            steps{
+                withSonarQubeEnv('local_sonarQube_server'){
+                    sh 'mvn sonar:sonar > sonar.log'
+                }
+            }
+            post {
+                always {
+                    script {
                         timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
+                                slackSend channel: "#ci_info,walid.elbir", message: "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                            }  
-                        }
+                                } 
+                            if(qg.status == "OK"){
+                                slackSend channel: "#ci_info,walid.elbir", message: "Quality Gate Passed: ${qg.status}"
+                            }
+                            }
                     }
+                }
+                success {
+                    script {
+                        def sonarlog= readFile('sonar.log');
+                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Successful: \n\n ``` ${sonar.log} 
+                    }
+                }
+                failure {
+                    script {
+                        def sonarlog= readFile('sonar.log');
+                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Failed: \n\n ``` ${sonar.log} 
+                    }
+
+                }
+            }
+        }
+
+        stage("Unit Testing") {
+            steps{
+                sh 'mvn test > test.log'
+            }
+            post {
+                success {
+                    script {
+                        def sonarlog= readFile('sonar.log');
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful: \n\n ``` ${test.log} 
+                    } 
+                }
+                failure {
+                    success {
+                    script {
+                        def sonarlog= readFile('sonar.log');
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed: \n\n ``` ${test.log} 
+                    } 
+                }
                 }
             }
         }
@@ -40,7 +99,6 @@ pipeline{
                 subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
                 to: 'walid.el.biir@gmail.com',    
-                presendScript: '''msg.addHeader("Authorization", "Bearer mlsn.4f30c464c1acfd5b6e31b25d51d5ab1d182da65fc42a6b0bb4e68b1b9471b125")'''
             )
         }
         success{
