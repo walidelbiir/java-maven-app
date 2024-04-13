@@ -22,14 +22,14 @@ pipeline{
                 success {
                     script {
                         def buildlog= readFile('build.log')
-                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here's the file you requested"
+                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here is the build.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successful"
                     }
                 }
                 failure {
                     script {
                         def buildlog= readFile('build.log')
-                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here's the file you requested"
+                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here is the build.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed"
                     }
                 }
@@ -60,14 +60,14 @@ pipeline{
                 success {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here's the file you requested"
+                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here is the sonar.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Successful"
                     }
                 }
                 failure {
                     script {
                         def sonarlog= readFile('sonar.log');
-                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here's the file you requested"
+                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here is the sonar.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Failed"
                     }
 
@@ -82,16 +82,16 @@ pipeline{
             post {
                 success {
                     script {
-                        def sonarlog= readFile('test.log');
-                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here's the file you requested"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful: \n\n ``` ${test.log} ```"
+                        def testlog= readFile('test.log');
+                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here is the test.log"
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful"
                     } 
                 }
                 failure {
                     script {
-                        def sonarlog= readFile('test.log');
-                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here's the file you requested"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed: \n\n ``` ${test.log} ```"
+                        def testlog= readFile('test.log');
+                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here is the test.log"
+                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed"
                     } 
                 }
                 
