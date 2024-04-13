@@ -1,4 +1,4 @@
-@Library('java-pipeline-library')
+@Library('java-pipeline-library') _
 
 pipeline{
     agent any
@@ -6,7 +6,7 @@ pipeline{
         maven "maven"
     }
     stages{
-        
+
         stage("Maven Build Status") {
             steps{
                 echo "=========Building with Maven========="
