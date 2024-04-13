@@ -23,14 +23,14 @@ pipeline{
                     script {
                         def buildlog= readFile("build-${env.BUILD_NUMBER}.log")
                         slackUploadFile filePath: "build-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the build-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successful"
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successful", color: "green"
                     }
                 }
                 failure {
                     script {
                         def buildlog= readFile("build-${env.BUILD_NUMBER}.log")
                         slackUploadFile filePath: "build-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the build-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed"
+                        slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed", color: "danger"
                     }
                 }
             }
@@ -48,11 +48,11 @@ pipeline{
                         timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
-                                slackSend channel: "#ci_info", message: "Pipeline aborted due to quality gate failure: ${qg.status}"
+                                slackSend channel: "#ci_info", message: "Pipeline aborted due to quality gate failure: ${qg.status}", color: "danger"
                                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 } 
                             if(qg.status == "OK"){
-                                slackSend channel: "#ci_info", message: "Quality Gate Passed: ${qg.status}"
+                                slackSend channel: "#ci_info", message: "Quality Gate Passed: ${qg.status}", color: "green"
                             }
                             }
                     }
@@ -61,14 +61,14 @@ pipeline{
                     script {
                         def sonarlog= readFile("sonar-${env.BUILD_NUMBER}.log");
                         slackUploadFile filePath: "sonar-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the sonar-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info", message: "Sonar Analysis Successful"
+                        slackSend channel: "#ci_info", message: "Sonar Analysis Successful", color: "green"
                     }
                 }
                 failure {
                     script {
                         def sonarlog= readFile("sonar-${env.BUILD_NUMBER}.log");
                         slackUploadFile filePath: "sonar-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the sonar-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info", message: "Sonar Analysis Failed"
+                        slackSend channel: "#ci_info", message: "Sonar Analysis Failed", color: "danger"
                     }
 
                 }
@@ -84,14 +84,14 @@ pipeline{
                     script {
                         def testlog= readFile("test-${env.BUILD_NUMBER}.log");
                         slackUploadFile filePath: "test-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the test-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info", message: "Unit Testing Successful"
+                        slackSend channel: "#ci_info", message: "Unit Testing Successful", color: "green"
                     } 
                 }
                 failure {
                     script {
                         def testlog= readFile("test-${env.BUILD_NUMBER}.log");
                         slackUploadFile filePath: "test-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the test-${env.BUILD_NUMBER}.log"
-                        slackSend channel: "#ci_info", message: "Unit Testing Failed"
+                        slackSend channel: "#ci_info", message: "Unit Testing Failed", color: "danger"
                     } 
                 }
                 
@@ -108,7 +108,7 @@ pipeline{
         }
         success{
             echo "========pipeline executed successfully ========"
-            slackSend channel: "#ci_info,@walid.elbir", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            slackSend channel: "#ci_info,@walid.elbir", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "green"
         }
         failure{
             echo "========pipeline execution failed========"
