@@ -10,14 +10,20 @@ pipeline{
         stage("Maven Build Status") {
             steps{
                 echo "=========Building with Maven========="
-                build.call()
+                script {
+                    build.call()
+                }
             }
             post{
                 success {
-                    build.postSuccess()
+                    script {
+                        build.postSuccess()
+                    }
                 }
                 failure {
-                    build.postFailure()
+                    script {
+                        build.postFailure()
+                    }
                 }
             }
         }
@@ -25,31 +31,45 @@ pipeline{
         stage("SonarQube analysis") {
             steps{
                 echo "=========Analysis with SonarQube========="
-                sonar.call()
+                script {
+                    sonar.call()
+                }
             }
             post {
                 always {
-                    sonar.waitForAnalysisReport()
+                    script {
+                        sonar.waitForAnalysisReport()
+                    }
                 }
                 success {
-                    sonar.postSuccess()
+                    script {
+                        sonar.postSuccess()
+                    }
                 }
                 failure {
-                    sonar.postFailure()
+                    script {
+                        sonar.postFailure()
+                    }
                 }
             }
         }
 
         stage("Unit Testing") {
             steps{
-                test.call()
+                script {
+                    test.call()
+                }
             }
             post {
                 success {
-                    test.postSuccess()
+                    script {
+                        test.postSuccess()
+                    }
                 }
                 failure {
-                    test.postFailure() 
+                    script{
+                        test.postFailure() 
+                    }
                 }
                 
             }
@@ -57,15 +77,21 @@ pipeline{
     }
     post{
         always{
-            general.sendEmail()
+            script{
+                general.sendEmail()
+            }
         }
         success{
-            echo "========pipeline executed successfully ========"
-            general.pipelineSuccess()
+            script {
+                echo "========pipeline executed successfully ========"
+                general.pipelineSuccess()
+            }
         }
         failure{
-            echo "========pipeline execution failed========"
-            general.pipelineFailure()
+            script {
+                echo "========pipeline execution failed========"
+                general.pipelineFailure()
+            }
         }
     }
 }
