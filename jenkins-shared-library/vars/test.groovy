@@ -1,5 +1,5 @@
 def call() {
-    sh "mvn test > test-${env.BUILD_NUMBER}.log >" 
+    sh "mvn test > test-${env.BUILD_NUMBER}.log" 
 }
 
 def postSuccess() {
