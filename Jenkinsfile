@@ -77,7 +77,7 @@ pipeline{
 
         stage("Unit Testing") {
             steps{
-                sh 'mvn test > test.log'
+                sh "mvn test > test.log"
             }
             post {
                 success {
