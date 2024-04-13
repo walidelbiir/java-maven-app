@@ -16,20 +16,20 @@ pipeline{
         stage("Maven Build Status") {
             steps{
                 echo "=========Executing Sonar Analysis========="
-                sh 'mvn clean install > build.log'  
+                sh 'mvn clean install > build-${env.BUILD_NUMBER}.log'  
             }
             post{
                 success {
                     script {
-                        def buildlog= readFile('build.log')
-                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here is the build.log"
+                        def buildlog= readFile('build-${env.BUILD_NUMBER}.log')
+                        slackUploadFile filePath: "build-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the build-${env.BUILD_NUMBER}.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Successful"
                     }
                 }
                 failure {
                     script {
-                        def buildlog= readFile('build.log')
-                        slackUploadFile filePath: "build.log", channel: '#ci_info', initialComment: "Here is the build.log"
+                        def buildlog= readFile('build-${env.BUILD_NUMBER}.log')
+                        slackUploadFile filePath: "build-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the build-${env.BUILD_NUMBER}.log"
                         slackSend channel: "#ci_info,walid.elbir", message: "Maven Build Failed"
                     }
                 }
@@ -39,7 +39,7 @@ pipeline{
         stage("SonarQube analysis") {
             steps{
                 withSonarQubeEnv('local_sonarQube_server'){
-                    sh 'mvn sonar:sonar > sonar.log'
+                    sh 'mvn sonar:sonar > sonar-${env.BUILD_NUMBER}.log'
                 }
             }
             post {
@@ -48,27 +48,27 @@ pipeline{
                         timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
-                                slackSend channel: "#ci_info,walid.elbir", message: "Pipeline aborted due to quality gate failure: ${qg.status}"
+                                slackSend channel: "#ci_info", message: "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 } 
                             if(qg.status == "OK"){
-                                slackSend channel: "#ci_info,walid.elbir", message: "Quality Gate Passed: ${qg.status}"
+                                slackSend channel: "#ci_info", message: "Quality Gate Passed: ${qg.status}"
                             }
                             }
                     }
                 }
                 success {
                     script {
-                        def sonarlog= readFile('sonar.log');
-                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here is the sonar.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Successful"
+                        def sonarlog= readFile('sonar-${env.BUILD_NUMBER}.log');
+                        slackUploadFile filePath: "sonar-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the sonar-${env.BUILD_NUMBER}.log"
+                        slackSend channel: "#ci_info", message: "Sonar Analysis Successful"
                     }
                 }
                 failure {
                     script {
-                        def sonarlog= readFile('sonar.log');
-                        slackUploadFile filePath: "sonar.log", channel: '#ci_info', initialComment: "Here is the sonar.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Sonar Analysis Failed"
+                        def sonarlog= readFile('sonar-${env.BUILD_NUMBER}.log');
+                        slackUploadFile filePath: "sonar-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the sonar-${env.BUILD_NUMBER}.log"
+                        slackSend channel: "#ci_info", message: "Sonar Analysis Failed"
                     }
 
                 }
@@ -82,16 +82,16 @@ pipeline{
             post {
                 success {
                     script {
-                        def testlog= readFile('test.log');
-                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here is the test.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Successful"
+                        def testlog= readFile('test-${env.BUILD_NUMBER}.log');
+                        slackUploadFile filePath: "test-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the test-${env.BUILD_NUMBER}.log"
+                        slackSend channel: "#ci_info", message: "Unit Testing Successful"
                     } 
                 }
                 failure {
                     script {
-                        def testlog= readFile('test.log');
-                        slackUploadFile filePath: "test.log", channel: '#ci_info', initialComment: "Here is the test.log"
-                        slackSend channel: "#ci_info,walid.elbir", message: "Unit Testing Failed"
+                        def testlog= readFile('test-${env.BUILD_NUMBER}.log');
+                        slackUploadFile filePath: "test-${env.BUILD_NUMBER}.log", channel: '#ci_info', initialComment: "Here is the test-${env.BUILD_NUMBER}.log"
+                        slackSend channel: "#ci_info", message: "Unit Testing Failed"
                     } 
                 }
                 
@@ -108,11 +108,11 @@ pipeline{
         }
         success{
             echo "========pipeline executed successfully ========"
-            slackSend channel: "#ci_info", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            slackSend channel: "#ci_info,@walid.elbir", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
         }
         failure{
             echo "========pipeline execution failed========"
-            slackSend channel: "#ci_info", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "danger"
+            slackSend channel: "#ci_info,@walid.elbir", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "danger"
         }
     }
 }
