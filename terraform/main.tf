@@ -19,7 +19,7 @@ variable "BUILD_NUMBER" {
 
 # Pulls the image
 resource "docker_image" "java_maven_app" {
-  name = "walidelbir/java_maven_app:${BUILD_NUMBER}"
+  name = "walidelbir/java_maven_app:${var.BUILD_NUMBER}"
 }
 
 # Create a container
