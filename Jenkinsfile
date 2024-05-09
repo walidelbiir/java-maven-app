@@ -100,9 +100,11 @@ pipeline{
 
         stage("terraform") {
             steps {
-                script {
-                    sh "ls"
-                    terraform.call()
+                dir('terraform'){
+                    script {
+                        sh "ls"
+                        terraform.call()
+                    }
                 }
             }
         }
