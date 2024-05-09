@@ -9,3 +9,5 @@ def postSuccess() {
 def postFailure() {
     slackSend channel: "#ci_info", message: "Docker Build Failed", color: "danger"
 }
+
+return this
