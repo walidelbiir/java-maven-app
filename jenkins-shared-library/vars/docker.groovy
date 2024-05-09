@@ -2,7 +2,7 @@ def call() {
     sh "docker build -t 'java_maven_app:${env.BUILD_NUMBER}' ."
 }
 
-def docker_login() {
+def login() {
     sh "docker login -u walidelbir -p walidelbir"
 }
 
