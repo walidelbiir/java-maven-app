@@ -81,6 +81,7 @@ pipeline{
             steps {
                 script {
                     docker.call()
+                    docker.login()
                     docker.push_to_dockerhub()
                 }
             }
