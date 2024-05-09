@@ -1,5 +1,5 @@
 def call() {
-    docker build -t "java_maven_app:latest" .
+    sh "docker build -t "java_maven_app:${env.BUILD_NUMBER}" ."
 }
 
 def postSuccess() {
