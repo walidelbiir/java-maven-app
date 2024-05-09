@@ -5,6 +5,7 @@ pipeline{
     tools{
         maven 'maven'
         dockerTool 'docker'
+        terraform 'terraform'
     }
     stages{
 
@@ -80,6 +81,7 @@ pipeline{
             steps {
                 script {
                     docker.call()
+                    docker.push_to_dockerhub()
                 }
             }
             post {
@@ -92,6 +94,14 @@ pipeline{
                     script {
                         docker.postFailure()
                     }
+                }
+            }
+        }
+
+        stage("terraform") {
+            steps {
+                script {
+                    terraform.call()
                 }
             }
         }

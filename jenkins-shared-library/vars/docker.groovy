@@ -2,6 +2,11 @@ def call() {
     sh "docker build -t 'java_maven_app:${env.BUILD_NUMBER}' ."
 }
 
+def push_to_dockerhub() {
+    sh "docker tag java_maven_app:${env.BUILD_NUMBER} walidelbir/java_maven_app:${env.BUILD_NUMBER}"
+    sh "docker push walidelbir/java_maven_app:${env.BUILD_NUMBER}"
+}
+
 def postSuccess() {
     slackSend channel: "#ci_info", message: "Docker Build Successfull", color: "good"
 }
