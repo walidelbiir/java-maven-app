@@ -102,7 +102,6 @@ pipeline{
             steps {
                 dir('terraform'){
                     script {
-                        sh "sed -i 's;@tag_holder@;${env.BUILD_NUMBER};g'./terraform/variables.tfvars"
                         terraform.call()
                     }
                 }
