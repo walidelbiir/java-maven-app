@@ -11,6 +11,12 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
+variable "BUILD_NUMBER" {
+  description = "The build number for the current deployment"
+  type        = string
+  default     = "94" # Default value, can be overridden by the -var flag
+}
+
 # Pulls the image
 resource "docker_image" "java_maven_app" {
   name = "walidelbir/java_maven_app:${BUILD_NUMBER}"
