@@ -4,6 +4,7 @@ pipeline{
     agent any
     tools{
         maven "maven"
+        docker "docker"
     }
     stages{
 
@@ -74,6 +75,28 @@ pipeline{
                 
             }
         }
+
+        stage("dockerize application") {
+            steps {
+                script {
+                    docker.call()
+                }
+            }
+            post {
+                success {
+                    script {
+                        docker.postSuccess()
+                    }
+                }
+                failure {
+                    script {
+                        docker.postFailure()
+                    }
+                }
+            }
+        }
+        
+        
     }
     post{
         always{

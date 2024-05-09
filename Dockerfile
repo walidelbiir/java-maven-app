@@ -1,4 +1,7 @@
 FROM tomcat:8.5.66
 
-COPY ./webapp.war /usr/local/tomcat/webapps
+COPY ./server/target/server.jar /usr/maven-project/
 
+WORKDIR /usr/maven-project/
+
+CMD [ "java" , "-jar" , "server.jar" ]
