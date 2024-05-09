@@ -5,7 +5,6 @@ pipeline{
     tools{
         maven 'maven'
         dockerTool 'docker'
-        terraform 'terraform'
     }
     stages{
 
