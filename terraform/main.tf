@@ -17,13 +17,9 @@ variable "BUILD_NUMBER" {
   default     = "94" # Default value, can be overridden by the -var flag
 }
 
-# Pulls the image
-resource "docker_image" "java_maven_app" {
-  name = "walidelbir/java_maven_app:${var.BUILD_NUMBER}"
-}
 
 # Create a container
 resource "docker_container" "java_maven_app" {
-  image = docker_image.java_maven_app.image_id
+  image = "walidelbir/java_maven_app:${var.BUILD_NUMBER}"
   name  = "java_maven_app"
 }

@@ -102,7 +102,9 @@ pipeline{
             steps {
                 dir('terraform'){
                     script {
-                        terraform.call()
+                        terraform.init()
+                        terraform.plan()
+                        terraform.apply()
                     }
                 }
             }
@@ -120,12 +122,15 @@ pipeline{
             script {
                 echo "========pipeline executed successfully ========"
                 general.pipelineSuccess()
+                terraform.destroy()
+                docker.imageDestroy()
             }
         }
         failure{
             script {
                 echo "========pipeline execution failed========"
                 general.pipelineFailure()
+                docker.imageDestroy()
             }
         }
     }

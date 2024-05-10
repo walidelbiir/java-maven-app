@@ -11,6 +11,10 @@ def push_to_dockerhub() {
     sh "docker push walidelbir/java_maven_app:${env.BUILD_NUMBER}"
 }
 
+def imageDestroy() {
+    sh "docker rmi  walidelbir/java_maven_app:${env.BUILD_NUMBER}"
+}
+
 def postSuccess() {
     slackSend channel: "#ci_info", message: "Docker Build Successfull", color: "good"
 }
