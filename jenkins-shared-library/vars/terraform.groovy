@@ -7,7 +7,7 @@ def plan() {
 }
 
 def apply() {
-    sh "terraform apply -auto-approve"
+    sh "terraform apply -auto-approve -var='BUILD_NUMBER=${env.BUILD_NUMBER}'"
 }
 
 def destroy () {

@@ -122,7 +122,9 @@ pipeline{
             script {
                 echo "========pipeline executed successfully ========"
                 general.pipelineSuccess()
-                terraform.destroy()
+                dir('terraform') {
+                    terraform.destroy()
+                }
                 docker.imageDestroy()
             }
         }
