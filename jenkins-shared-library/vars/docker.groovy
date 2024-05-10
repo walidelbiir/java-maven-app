@@ -13,6 +13,7 @@ def push_to_dockerhub() {
 
 def imageDestroy() {
     sh "docker rmi  walidelbir/java_maven_app:${env.BUILD_NUMBER}"
+    sh "docker rmi  java_maven_app:${env.BUILD_NUMBER}"
 }
 
 def postSuccess() {
