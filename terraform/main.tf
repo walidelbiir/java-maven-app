@@ -15,11 +15,11 @@ provider "azurerm" {
   features {}
 }
 
-# variable "BUILD_NUMBER" {
-#   description = "The build number for the current deployment"
-#   type        = string
-#   default     = "94" # Default value, can be overridden by the -var flag
-# }
+variable "BUILD_NUMBER" {
+  description = "The build number for the current deployment"
+  type        = string
+  default     = "94" # Default value, can be overridden by the -var flag
+}
 
 
 # # Create a container
