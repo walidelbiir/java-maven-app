@@ -97,18 +97,6 @@ pipeline{
         //         }
         //     }
         // }
-
-        stage("terraform") {
-            steps {
-                dir('terraform'){
-                    script {
-                        terraform.init()
-                        terraform.plan()
-                        terraform.apply()
-                    }
-                }
-            }
-        }
         
         
     }
