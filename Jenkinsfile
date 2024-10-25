@@ -76,27 +76,27 @@ pipeline{
             }
         }
 
-        // stage("dockerize application") {
-        //     steps {
-        //         script {
-        //             docker.call()
-        //             docker.login()
-        //             docker.push_to_dockerhub()
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             script {
-        //                 docker.postSuccess()
-        //             }
-        //         }
-        //         failure {
-        //             script {
-        //                 docker.postFailure()
-        //             }
-        //         }
-        //     }
-        // }
+        stage("dockerize application") {
+             steps {
+                 script {
+                     docker.call()
+                     docker.login()
+                     docker.push_to_dockerhub()
+                 }
+             }
+             post {
+                 success {
+                     script {
+                        docker.postSuccess()
+                     }
+                 }
+                 failure {
+                     script {
+                         docker.postFailure()
+                     }
+                 }
+             }
+         }
         
         
     }
@@ -110,9 +110,6 @@ pipeline{
             script {
                 echo "========pipeline executed successfully ========"
                 general.pipelineSuccess()
-                dir('terraform') {
-                    terraform.destroy()
-                }
                 docker.imageDestroy()
             }
         }
@@ -120,7 +117,6 @@ pipeline{
             script {
                 echo "========pipeline execution failed========"
                 general.pipelineFailure()
-                docker.imageDestroy()
             }
         }
     }
