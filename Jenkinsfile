@@ -76,27 +76,27 @@ pipeline{
             }
         }
 
-        // stage("dockerize application") {
-        //      steps {
-        //          script {
-        //              docker.call()
-        //              docker.login()
-        //              docker.push_to_dockerhub()
-        //          }
-        //      }
-        //      post {
-        //          success {
-        //              script {
-        //                 docker.postSuccess()
-        //              }
-        //          }
-        //          failure {
-        //              script {
-        //                  docker.postFailure()
-        //              }
-        //          }
-        //      }
-        //  }
+        stage("dockerize application") {
+             steps {
+                 script {
+                     docker.call()
+                     docker.login()
+                     docker.push_to_dockerhub()
+                 }
+             }
+             post {
+                 success {
+                     script {
+                        docker.postSuccess()
+                     }
+                 }
+                 failure {
+                     script {
+                         docker.postFailure()
+                     }
+                 }
+             }
+         }
         
         
     }
